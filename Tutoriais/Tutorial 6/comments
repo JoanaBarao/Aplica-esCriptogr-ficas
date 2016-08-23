@@ -1,0 +1,16 @@
+Tutorial 6
+
+   Em primeiro lugar começamos por gerar o par de chaves de uma entidade confiavel, para tal usamos o programa RSAstuff.py e chamamos 'python RSAstuff.py -genkey TrustedAuthority'. Em seguida precisamos de um par de chaves para o servidor e para tal usamos 'python RSAstuff -genkey ServerKey'. É ainda necessário assinar a chave publica do servidar e para isso usamos 'python RSAstuff.py -sign TrustedAuthority.priv ServerKey.pub'. Copiamos a chave publica da entidade confiável para a pasta do cliente e para a pasta keys do servidor. O par de chaves do servidor (bem como a chave publica assinada) também é copiado para a pasta keys. 
+
+   O cliente recebe a chave publica do servidor e a assinatura da entidade confiavel. Utilizando a chave publica da entidade verifica a assinatura e se esta for igual procede à conecção. O cliente gera então uma MasterKey de 128 bits e envia esta cifrada utilizando a chave publica que recebeu do servidor. O servidor consegue recuperar a MasterKey pois é 'dono' da chave privada associada à chave publica que enviou. Desta MasterKey vão ser derivadas as chaves, os ivs e os macs utilizados na comunicação cliente-servidor e servidor-cliente.
+   O cliente envia o ficheiro cifrado com a chave derivada da MasterKey, com o respectivo iv e utiliza o mac para gerar uma tag apropriada para cada bloco. O servidor, ao decifrar bloco a bloco, verifica a tag e só decifra o bloco se a tag for igual à calculada por este.
+
+   Na pasta Client temos o programa do cliente (Client.py), o ficheiro 'TrustedAuthority.pub' com a chave publica da entidade e a pasta 'Files' onde se encontram os ficheiros que queremos enviar para o servidor (nesta pasta encontra-se um ficheiro para testes: example).
+   Na pasta Server temos o programa do servidor (Server.py) e a pasta 'keys' com o par de chaves do servidor (e a assinatura da chave publica) e a chave publica da entidade confiavel. A pasta 'uploads' resulta do teste seguinte:
+   # Terminal na pasta Server
+      - python Server.py 4556 uploads
+   # Terminal na pasta Client
+      - python Client.py example ubuntu 4556
+   
+   O programa Client.py funciona dando o nome de um ficheiro que se encontre na pasta 'Files' e o host e a porta de um servidor (que esteja com a ligação aberta).
+   O programa Server.py funciona dando a porta de ligação e o nome de uma pasta onde ficarão os ficheiros recebidos pelo cliente. Quando o servidor é iniciado é mostrada uma mensagem 'Server started host:port' onde host deve ser usado no programa Client.py para efectuar a ligação do cliente.

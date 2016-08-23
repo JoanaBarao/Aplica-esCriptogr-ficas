@@ -1,0 +1,17 @@
+Tutorial 5
+
+   O cliente gera uma MasterKey de 128 bits e envia esta cifrada utilizando a chave publica que recebeu do servidor. O servidor consegue recuperar a MasterKey pois é 'dono' da chave privada associada à chave publica que enviou. Desta MasterKey vão ser derivadas as chaves, os ivs e os macs utilizados na comunicação cliente-servidor e servidor-cliente.
+   O cliente envia o ficheiro cifrado com a chave derivada da MasterKey, com o respectivo iv e utiliza o mac para gerar uma tag apropriada para cada bloco. O servidor, ao decifrar bloco a bloco, verifica a tag e só decifra o bloco se a tag for igual à calculada por este.
+
+   Na pasta Client temos o programa do cliente (Client.py) e a pasta 'Files' onde se encontram os ficheiros que queremos enviar para o servidor (nesta pasta encontra-se um ficheiro para testes: example).
+   Na pasta Server temos o programa do servidor (Server.py). A pasta 'uploads' resulta do teste seguinte:
+   # Terminal na pasta Server
+      - python Server.py 4556 uploads
+   # Terminal na pasta Client
+      - python Client.py example ubuntu 4556
+   
+   O programa Client.py funciona dando o nome de um ficheiro que se encontre na pasta 'Files' e o host e a porta de um servidor (que esteja com a ligação aberta).
+   O programa Server.py funciona dando a porta de ligação e o nome de uma pasta onde ficarão os ficheiros recebidos pelo cliente. Quando o servidor é iniciado é mostrada uma mensagem 'Server started host:port' onde host deve ser usado no programa Client.py para efectuar a ligação do cliente.
+
+   Como a comunicação é estabelecida, o cliente recebe uma chave publica que pensa ser do servidor mas que de facto pode ser de qualquer outra pessoa. E como essa pessoa tem a chave privada associada, esta pode decifrar a MasterKey e decifrar todos os pacotes enviados pelo cliente neste canal. Por outro lado também não há qualquer autentificação do cliente.
+   Este ataque não seria possível no tutorial 4 se a pessoa que se coloca no meio não sabe a passphrase, uma vez que a LongTermKey seria diferente.

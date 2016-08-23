@@ -1,0 +1,15 @@
+Tutorial 4
+
+   Neste tutorial temos o programa Key_PBE.py que gera uma chave de 128 bits e a armazena no ficheiro 'LongTermKey' cifrada com base numa passphrase. Este ficheiro é então utilizado pelos programas Client.py e Server.py. O cliente gera uma chave de sessão de 128 bits e envia esta cifrada (com RC4) utilizando uma chave que resulta de decifrar a LongTermKey com uma certa passphrase. Para o servidor conseguir recuperar a chave de sessão tem que utilizar a mesma passphrase que o cliente. Depois o cliente e o servidor trocam números aleatórios e usam estes em conjunto com a chave de sessão para gerar uma MasterKey. Desta MasterKey vão ser derivadas as chaves, os ivs e os macs utilizados na comunicação cliente-servidor e servidor-cliente.
+   O cliente envia o ficheiro cifrado com a chave derivada da MasterKey, com o respectivo iv e utiliza o mac para gerar uma tag apropriada para cada bloco. O servidor, ao decifrar bloco a bloco, verifica a tag e só decifra o bloco se a tag for igual à calculada por este.
+
+   Na pasta Client temos o programa do cliente (Client.py) e a pasta 'Files' onde se encontram os ficheiros que queremos enviar para o servidor (nesta pasta encontra-se um ficheiro para testes: example).
+   Na pasta Server temos o programa do servidor (Server.py). A pasta 'uploads' resulta do teste seguinte:
+   # Terminal na pasta Server
+      - python Server.py 4556 uploads
+   # Terminal na pasta Client
+      - python Client.py example ubuntu 4556
+   
+   O programa Client.py funciona dando o nome de um ficheiro que se encontre na pasta 'Files' e o host e a porta de um servidor (que esteja com a ligação aberta).
+   O programa Server.py funciona dando a porta de ligação e o nome de uma pasta onde ficarão os ficheiros recebidos pelo cliente. Quando o servidor é iniciado é mostrada uma mensagem 'Server started host:port' onde host deve ser usado no programa Client.py para efectuar a ligação do cliente.
+   Tanto no Client.py como no Server.py é pedida uma passphrase. Para que as chaves utilizadas sejam iguais (o que permite a correcta decifração dos ficheiros) a passphrase tem que ser a mesma para o cliente e o servidor.

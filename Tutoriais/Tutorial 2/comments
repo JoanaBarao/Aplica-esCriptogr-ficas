@@ -1,0 +1,15 @@
+Tutorial 2
+
+   Neste tutorial temos o programa GenKey.py que gera uma chave de 128 bits e a armazena num ficheiro com o nome dado. O ficheiro 'key' presente no directório resulta do comando: python GenKey.py key. Este ficheiro é então copiado para as pastas Client e Server para ser utilizado por estes.
+
+   Na pasta Client temos o programa do cliente (Client.py), a chave (key) e a pasta 'Files' onde se encontram os ficheiros que queremos enviar para o servidor (nesta pasta encontra-se um ficheiro para testes: example).
+   Na pasta Server temos o programa do servidor (Server.py) e a chave (key). A pasta 'uploads' resulta do teste seguinte:
+   # Terminal na pasta Server
+      - python Server.py 4556 uploads RC4
+   # Terminal na pasta Client
+      - python Client.py example ubuntu 4556 RC4
+   
+   O programa Client.py funciona dando o nome de um ficheiro que se encontre na pasta 'Files', o host e a porta de um servidor (que esteja com a ligação aberta) e a cifra a utilizar para cifrar os ficheiros. A cifra deve ser indicada utilizando exactamente os nomes que se encontram no enunciado do tutorial.
+   O programa Server.py funciona dando a porta de ligação, o nome de uma pasta onde ficarão os ficheiros recebidos pelo cliente e a cifra a ser utilizada. Quando o servidor é iniciado é mostrada uma mensagem 'Server started host:port' onde host deve ser usado no programa Client.py para efectuar a ligação do cliente.
+
+   Quanto à experiência de testar os diferentes modos para cifrar/decifrar foi colocado nos programas a contagem do tempo de execução. Testando todas os modos possíveis o que observei foi que tanto para o RC4 como para o CBC (NoPadding e PKCS5Padding) os tempos de execução do Server.py rondam os 0.00035 seg e do Client.py os 0.0005 seg. Já para os modos CFB8 (NoPadding e PKCS5Padding) e CFB os tempos de execução do Server.py são cerca de 0.0015 seg e do Client.py são 0.001 seg. Podemos ver assim que a utilização do AES/CFB8 e AES/CFB é mais lenta que as outras opções e que o tipo de padding não tem influência no tempo de execução dos programas. 

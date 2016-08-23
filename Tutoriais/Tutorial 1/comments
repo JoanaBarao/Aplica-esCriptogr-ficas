@@ -1,0 +1,8 @@
+Tutorial 1
+
+   Neste tutorial os programas programA.py e programB.py contêm todas as tarefas pedidas e estes são compatíveis entre si e com o openssl.
+   Na pasta estão ficheiros que resultam de efectuar o seguinte teste:
+      - python programA.py -genkey key
+      - python programA.py -enc key example enc
+      - python programA.py -dec key enc plainText
+   Utilizar o programa B para executar os comandos anteriores produz o mesmo resultado. O mesmo acontece com o openssl se a chave usada for a impressa no ecrã quando se utiliza o comando -genkey.
